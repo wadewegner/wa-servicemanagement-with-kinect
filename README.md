@@ -8,7 +8,7 @@
     <li><strong>KinectToolbox NuGet Package</strong>: Install-Package KinectToolbox</li>
     <li><strong>Coding4Fun.Kinect.Wpf NuGet Package</strong>: Install-Package Coding4Fun.Kinect.Wpf</li>
 </ul>
-<h2>Update App.Config<h3>
+<h3>Update App.Config</h3>
 <ul>
     <li><strong>Add Certificate PFX</strong>: You need to create an add the PFX file you're using to access the Service Management API. Export the PFX and add it to the solution.</li>
     <li><strong>Add Certificate Password</strong>: Add the PFX password.</li>
