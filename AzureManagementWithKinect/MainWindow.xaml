@@ -1,0 +1,186 @@
+﻿<Window x:Class="AzureManagementWithKinect.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:kt="clr-namespace:AzureManagementWithKinect"
+        xmlns:Controls="clr-namespace:Coding4Fun.Kinect.Wpf.Controls;assembly=Coding4Fun.Kinect.Wpf"
+        Title="Kinect Powered Windows Azure" WindowState="Maximized">
+
+    <Window.Resources>
+        <Style x:Key="DetailTextBlockKeyStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+        </Style>
+
+        <Style x:Key="DetailTextBlockValueStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+        </Style>
+
+        <Style x:Key="DetailButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="10 30 10 0" />
+            <Setter Property="Background" Value="Orange" />
+            <Setter Property="Opacity" Value="0.55" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Width" Value="180" />
+            <Setter Property="Height" Value="90" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+
+        <Style x:Key="TrackingTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="FontFamily" Value="Segoe UI Semilight" />
+            <Setter Property="Opacity" Value="0.85" />
+            <Setter Property="Margin" Value="10 0 10 25" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Visibility" Value="Hidden" />
+            <Setter Property="Background" Value="Red" />
+            <Setter Property="Padding" Value="5" />
+        </Style>
+
+        <Storyboard x:Key="LoadingStoryBoard" RepeatBehavior="Forever">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+                <SplineDoubleKeyFrame KeyTime="00:00:02" Value="360"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+    </Window.Resources>
+
+    <Grid>
+        <kt:KinectColorViewer x:Name="kinectColorViewer" x:FieldModifier="public" HorizontalAlignment="Stretch"  />
+
+        <TextBlock Name ="Title" FontSize="36" Text="Kinect Powered Windows Azure" 
+                   HorizontalAlignment="Center" VerticalAlignment="Top"  
+                   FontFamily="Segoe UI" Opacity="0.85" 
+                   Margin="0 20 0 0" Background="White" 
+                   Padding="20 5 20 5" Height="65"/>
+
+        <ListView Name="MainView" Background="Transparent" >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Height="250" Width="200" Background="Orange" Margin="30 0 30 0" Opacity="0.55">
+                        <Image Source="/Resources/gears.png" Width="130"  HorizontalAlignment="Center" Margin="0 25 0 0" />
+                        <TextBlock FontSize="20" Text="{Binding HostedServiceName}" HorizontalAlignment="Center" FontFamily="Segoe UI" Margin="0 25 0 0" TextTrimming="WordEllipsis" FontWeight="DemiBold" Padding="5 0 5 0"/>
+                        <TextBlock FontSize="18" Text="{Binding RoleName}" HorizontalAlignment="Center" FontFamily="Segoe UI" Margin="0 5 0 0" TextTrimming="WordEllipsis" FontWeight="DemiBold" Padding="5 0 5 0"/>
+                        <TextBlock FontSize="16" Text="{Binding Environment}" HorizontalAlignment="Center" FontFamily="Segoe UI" Margin="0 5 0 0" TextTrimming="WordEllipsis" FontWeight="DemiBold" Padding="5 0 5 0"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" ScrollViewer.CanContentScroll="True"></StackPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+
+        </ListView>
+
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="DetailView" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="300"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="1" Height="500" Width="700" Background="red" Margin="0 100 0 0" Opacity="0.7">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition  Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Role Name" Style="{StaticResource DetailTextBlockKeyStyle}"></TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Role.RoleName}" Style="{StaticResource DetailTextBlockValueStyle}"></TextBlock>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="OS Version" Style="{StaticResource DetailTextBlockKeyStyle}"></TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Role.OsVersion}" Style="{StaticResource DetailTextBlockValueStyle}"></TextBlock>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Name" Style="{StaticResource DetailTextBlockKeyStyle}"></TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Deployment.Name}" Style="{StaticResource DetailTextBlockValueStyle}"></TextBlock>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Label" Style="{StaticResource DetailTextBlockKeyStyle}"></TextBlock>
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Deployment.Label}" Style="{StaticResource DetailTextBlockValueStyle}"></TextBlock>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Role Instance Count" Style="{StaticResource DetailTextBlockKeyStyle}"></TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding RoleInstanceCount}" Style="{StaticResource DetailTextBlockValueStyle}"></TextBlock>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Url" Style="{StaticResource DetailTextBlockKeyStyle}"></TextBlock>
+                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Deployment.Url}" Style="{StaticResource DetailTextBlockValueStyle}"></TextBlock>
+
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="Environment" Style="{StaticResource DetailTextBlockKeyStyle}"></TextBlock>
+                <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Deployment.DeploymentSlot}" Style="{StaticResource DetailTextBlockValueStyle}"></TextBlock>
+
+                <TextBlock Grid.Row="7" Grid.Column="0" Text="SDK Version" Style="{StaticResource DetailTextBlockKeyStyle}"></TextBlock>
+                <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding Deployment.SdkVersion}" Style="{StaticResource DetailTextBlockValueStyle}"></TextBlock>
+
+                <TextBlock Grid.Row="8" Grid.Column="0" Text="Status" Style="{StaticResource DetailTextBlockKeyStyle}"></TextBlock>
+                <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding Deployment.Status}" Style="{StaticResource DetailTextBlockValueStyle}"></TextBlock>
+            </Grid>
+
+            <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left">
+                <Button Name="ScaleUpButton" Content="Scale Up" Style="{StaticResource DetailButtonStyle}"></Button>
+                <Button Name="ScaleDownButton" Content="Scale Down" Style="{StaticResource DetailButtonStyle}"></Button>
+                <Button Name="SwapButton" Content="Swap VIP" Style="{StaticResource DetailButtonStyle}"></Button>
+                <Button Name="StopButton" Content="Stop Instance" Style="{StaticResource DetailButtonStyle}"></Button>
+            </StackPanel>
+
+            <StackPanel Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <Button Name="RefreshButton" Grid.Column="0" Content="Refresh" Style="{StaticResource DetailButtonStyle}"/>
+                <Button Name="BackButton" Grid.Column="0" Content="&lt;&lt; Back" Style="{StaticResource DetailButtonStyle}"/>
+            </StackPanel>
+        </Grid>
+
+        <Canvas Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+            <Controls:HoverButton Margin="0" Padding="0" x:Name="kinectButton" ImageSize="64"                                           
+                                ImageSource="/Resources/Hand_Basic.png"  
+                                ActiveImageSource="/Resources/Hand_Basic.png" 
+                                TimeInterval="2000" Canvas.Left="0" Canvas.Top="0" Panel.ZIndex="1000" />
+        </Canvas>
+
+        <Grid Name="LoadingImage" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Hidden" Background="White" Opacity="0.8">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Ellipse x:Name="ellipse" StrokeThickness="15" RenderTransformOrigin="0.5,0.5" Width="90" Height="90">
+                    <Ellipse.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                        </TransformGroup>
+                    </Ellipse.RenderTransform>
+                    <Ellipse.Stroke>
+                        <LinearGradientBrush EndPoint="0.445,0.997" StartPoint="0.555,0.003">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="Black" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Stroke>
+                </Ellipse>
+                
+                <TextBlock Name="LoadingText" Text="Loading..." FontSize="20" Foreground="Black" />
+            </StackPanel>
+        </Grid>
+
+        <TextBlock Name="TrackingText" Text="Tracking" Style="{StaticResource TrackingTextBlockStyle}"/>
+    </Grid>
+</Window>
